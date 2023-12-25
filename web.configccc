@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+ <system.web>
+     <customErrors mode="RemoteOnly" defaultRedirect="~/index.html" />
+  </system.web>
+ <system.webServer>
+ 
+ <rewrite>
+ <rules>
+   <rule name="http to https" stopProcessing="true">
+            <match url="(.*)" />
+            <conditions>
+                <add input="{HTTPS}" pattern="^OFF$" />
+            </conditions>
+            <action type="Redirect" url="https://{HTTP_HOST}" />
+        </rule>
+ <rule name="React Routes" stopProcessing="true">
+ <match url=".*" />
+ <conditions logicalGrouping="MatchAll">
+ <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+ <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+ <add input="{REQUEST_URI}" pattern="^/(api)" negate="true" />
+ </conditions>
+ <action type="Rewrite" url="https://{HTTP_HOST}" />
+ </rule>
+
+
+ </rules>
+ </rewrite>
+        <httpErrors>
+            <remove statusCode="404" subStatusCode="-1" />
+            <error statusCode="404" prefixLanguageFilePath="" path="https://gspos.club/index.html" responseMode="Redirect" />
+        </httpErrors>
+        <staticContent>
+            <mimeMap fileExtension=".woff2" mimeType="text/plain" />
+        </staticContent>
+        <httpProtocol>
+            <customHeaders>
+                <add name="Access-Control-Allow-Origin" value="*" />
+            </customHeaders>
+        </httpProtocol>
+ 
+ </system.webServer>
+</configuration>

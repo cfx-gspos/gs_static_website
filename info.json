@@ -1,0 +1,12 @@
+{
+  "main": [
+    "https://gspos.club/conflux_linux_x64_v2.2.2.zip"
+  ],
+  "test": [
+    "https://github.com/Conflux-Chain/conflux-rust/releases/download/v2.1.0-testnet/conflux_linux_v2.1.0-testnet.zip"
+  ],
+  "net8888": [
+     "https://gspos.club/conflux8888_linux_v2.2.99.zip"
+  ],
+"latestContract":"98cdf9283dce51eefc74339d39b0cc6fba8d21c9"
+}

@@ -1,0 +1,397 @@
+ 
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Consensus PoS Pool</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A stable, safe, decentralized, easy to use Conflux PoS Pool">
+    <meta name="keywords" content="Conflux, PoS, Pool, Consensus, decentralized"><link rel="shortcut icon" href="favicon.ico">
+<link href="app/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link rel="stylesheet" href="app/bootstrap-icons.css">
+<link rel="stylesheet" href="styles/style.css">
+  </head>
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" id="navbar">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img src="/favicon.ico" alt="" width="30" height="30" class="d-inline-block align-text-top">
+          Consensus Pool
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item" @click="changeSpace('Core')">
+              <a :class="`nav-link ${space.value == 'Core' ? 'active' : ''}`" href="#">Core</a>
+            </li>
+            <li v-if="config.value.eSpaceAddress" class="nav-item" @click="changeSpace('eSpace')">
+              <a :class="`nav-link ${space.value == 'eSpace' ? 'active' : ''}`" href="#">eSpace</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id='app' class="container d-none">
+      
+      <div class="row justify-content-end mt-3">
+        <div class="col-md-3 col-6">
+          <button v-if="!userInfo.connected" class="btn btn-primary" v-on:click="connectWallet">Connect Wallet</button>
+          <div v-else>
+            <button type="button" class="btn btn-outline-primary">
+              {{shortenAccount}}
+            </button>
+
+            <span class="text-primary" v-if="chainStatus.chainId === 1">&nbsp; TestNet</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col text-center">
+<h1 style='color:red;display:none;'>To celebrete Conflux espace launch, Consensus Pool set the performance fee to 0.01% for more than half year,have fun,  please enjoy it.</h1>
+          <h1 style="color: cornflowerblue">Consensus PoS Pool</h1><b>(new domain:gspos.club)</b>
+          <p>Stake your CFX in Conflux PoS to help improve the network's finality and earn PoS rewards</p>
+<a href="/mobile" target="_blank">Mobile Version</a>
+        </div>
+      </div>
+
+      <div class="row mt-3 border b-shadow rounded-3 p-4">
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="left-icon float-start">
+            <i class="bi-bank" style="font-size: 40px; color: cornflowerblue;"></i>
+          </div>
+          <div>
+            <div><span class="h-num" :title="formatedTotalLocked">{{prettyTotalLocked}}</span></div>
+            <span class="intro-title">Staking Vault</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="left-icon float-start">
+            <i class="bi-cash-coin" style="font-size: 40px; color: cornflowerblue;"></i>
+          </div>
+          <div>
+            <div><span class="h-num" :title="formatedTotalRevenue">{{prettyTotalRevenue}}</span></div>
+            <span class="intro-title">Total Earned</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="left-icon float-start">
+            <i class="bi-percent" style="font-size: 40px; color: cornflowerblue;"></i>
+          </div>
+          <div>
+            <div><span class="h-num">{{poolInfo.apy}}%</span></div>
+            <span class="intro-title">Expected APY</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="left-icon float-start">
+            <i class="bi-people" style="font-size: 40px; color: cornflowerblue;"></i>
+          </div>
+          <div>
+            <div><span class="h-num">{{poolInfo.stakerNumber}}</span></div>
+            <span class="intro-title">Staker Number</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="left-icon float-start">
+            <i class="bi-plug" style="font-size: 40px; color: cornflowerblue;"></i>
+          </div>
+          <div>
+            <div>
+              <span v-if="poolInfo.status.forceRetired === true" class="h-num" style="color:#42b883">Error</span>
+              <span v-else class="h-num" style="color:#42b883">Good</span>
+            </div>
+            <span class="intro-title">Pool Status</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="left-icon float-start">
+            <i class="bi-pin-map-fill" style="font-size: 40px; color: cornflowerblue;"></i>
+          </div>
+          <div>
+            <div><a :href="posAddressLink" target="_blank" style="line-height:30px;text-decoration:none">{{shortPosAddress}}</a></div>
+            <span class="intro-title">PoS Address</span>
+          </div>
+        </div>
+        <!-- <div class="col-2">
+          <div class="left-icon float-start">
+            <i class="bi-mortarboard" style="font-size: 40px; color: cornflowerblue;"></i>
+          </div>
+          <div>
+            <div><span class="h-num">{{poolInfo.inCommittee ? 'Yes' : 'NO'}}</span></div>
+            <span class="intro-title">In Committee</span>
+          </div>
+        </div> -->
+      </div>
+
+      <div class="row mt-3 border b-shadow rounded-3 p-2" id="rewardChartContainer" style="display:none">
+        <div class="col">
+          <canvas id="rewardChart" height="40"></canvas>
+        </div>
+      </div>
+
+      <div class="row mt-4 border b-shadow rounded-3 p-4">
+        <div class="col-lg-3 col-md-6 col-12 pt-4">
+          <div>
+            <div><span class="h-num">{{userStakedCFX}}</span></div>
+            <span class="intro-title">My Staked (CFX)</span>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-7 col-12 mb-2">
+              <input class="form-control" type="number" v-model="stakeCount">
+            </div>
+            <div class="col-md-5 col-12">
+              <button class="btn btn-primary" v-on:click="stake" :disabled="!userInfo.connected">Stake</button>
+            </div>
+          </div>
+          <p class="intro-title mt-1" v-if="userInfo.connected">Balance: {{userInfo.balance}} CFX</p>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-12 pt-4">
+          <div>
+            <div><span class="h-num">{{userInfo.userInterest}}</span></div>
+            <span class="intro-title">My Rewards (CFX)</span>
+          </div>
+          <button class="btn btn-primary mt-2" v-on:click="claim" :disabled="!userInfo.connected">Claim</button>
+          <p class="intro-title mt-1" v-if="userInfo.connected && poolInfo.lastRewardTime > 0">Last Update: {{lastRewardTime}}</p>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-12 pt-4">
+          <div>
+            <div><span class="h-num">{{unstakeableCFX}}</span></div>
+            <span class="intro-title">Unstakeable CFX</span>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-7 col-12 mb-2">
+              <input class="form-control" type="number" v-model="unstakeCount">
+            </div>
+            <div class="col-md-5 col-12">
+              <button class="btn btn-primary" v-on:click="unstake" :disabled="!userInfo.connected"  >Unstake</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-12 pt-4">
+          <div>
+            <div><span class="h-num">{{withdrawableCFX}}</span></div>
+            <span class="intro-title">Withdrawable CFX</span>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-7 col-12 mb-2">
+              <input class="form-control" type="number" v-model="withdrawCount">
+            </div>
+            <div class="col-md-5 col-12">
+              <button class="btn btn-primary" v-on:click="withdraw" :disabled="!userInfo.connected"  >Withdraw</button>
+ 
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="hashModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            
+            <div class="modal-header" style="border-bottom: none">
+              <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>  
+            </div>
+            <div class="modal-body text-center">
+              <i class="bi-check-circle-fill" style="font-size: 40px; color: rgb(100, 237, 107);"></i>
+              <br/>
+              <span>Transaction Submitted.</span>
+              <!-- <br/> -->
+              <!-- <span>Transaction Hash: </span> -->
+              <!-- <a :href="txScanLink">{{shortHash}}</a> -->
+              <!-- <a id="hashLink"></a> -->
+              <div style="height: 50px"></div>
+            </div>
+            <!-- <div class="modal-footer" style="border-top: none">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="withdrawModal" tabindex="-2" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>  
+            </div>
+            <div class="modal-body text-center">
+              <i class="bi-hourglass-split" style="font-size: 40px; color: cornflowerblue;"></i>
+              <br/>
+              <span>Please try to withdraw small count or wait for a few hours and try again</span>
+              <div style="height: 50px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4 border b-shadow rounded-3 p-4" v-if="userInfo.connected">
+        <div class="col-md-6 col-12">
+          <table class="table table-striped table-bordered caption-top">
+            <caption>Locking votes</caption>
+            <thead>
+              <tr>
+                <th scope="col">Amount (CFX)</th>
+                <th scope="col">EndTime</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in userInfo.userInQueue">
+                <th scope="row">{{item.amount}}</th>
+                <td>{{item.endTime}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-6 col-12">
+          <table class="table table-striped table-bordered caption-top">
+            <caption>Unlocking votes</caption>
+            <thead>
+              <tr>
+                <th scope="col">Amount (CFX)</th>
+                <th scope="col">EndTime</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in userInfo.userOutOueue">
+                <th scope="row">{{item.amount}}</th>
+                <td>{{item.endTime}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row mt-4 border b-shadow rounded-3 p-3" v-if="userInfo.nftCount>0">
+        <div class="col">
+          <h5>Genesis NFT:</h5>
+          <img src="https://pospool.Consensusverse.com/NFT/Consensus_PoS_Pool_Genesis_NFT_Small.png" alt="" width="180">
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="alert alert-success" role="alert">
+          Features:
+          <br/>
+          1. The Consensus PoS Pool Dapp is simple and easy to use.
+          <br/>
+          2. Controlled by contract, pure decentralized.
+          <br/>
+          3. The operation team are very professional, the PoS node is stable and safe.
+          <br/>
+          4. Contract code are open sourced at Github and verified in ConfluxScan.
+          <br/>
+          5. Contract is sponsored by Conflux Foundation, no transaction fee when interacting with it.
+        </div>
+      </div>
+
+      <div class="row mt-4 border b-shadow rounded-3 pt-3">
+         
+        <div class="col-12 col-lg-6">
+          <h5>Stake Rules:</h5>
+          <ul>
+            <li>The Stake/Unstake CFX amount must be multiple of 1000</li>
+            <li>From Conflux hardfork v2.1 (2022.10.26), the lock period of Stake is 13 day, Unstake is 1 day</li>
+            <!-- <li>The pool performance fee is {{perFee}}% of PoS reward</li> -->
+            <li>The reward will updated every hour</li>
+            <li>The reward can be claimed any time</li>
+          </ul>
+        </div>
+
+
+        <div class="col-12 col-lg-6">
+          <h5>Performance Rule:</h5>
+<table class="table table-bordered u-table--v2">
+                  <thead>
+                    <tr>
+                      <th>
+                        CFX
+                      </th>
+                      <th>
+                        Performance Fee
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>&gt;1M</td>
+                      <td>0.01%</td>
+                    </tr>
+                    <tr>
+                      <td>100k~1M</td>
+                      <td>0.01%</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        &lt;100k
+                      </td>
+                      <td>0.01%</td>
+                    </tr>
+                  </tbody>
+                </table>        </div>
+
+
+      </div>
+
+      <div class="row mt-3 mb-5" id='promise'> 
+
+      </div>
+<div class="row mt-3 mb-5" >
+ 
+
+
+Twitter:https://twitter.com/CFX_gspos_club
+
+</div>
+    </div>
+	<script src="//cdn.staticfile.org/jquery/1.8.2/jquery.min.js"></script>
+		<script src="//cdn.staticfile.org/moment.js/2.24.0/moment-with-locales.min.js"></script>
+		<script src="//cdn.staticfile.org/moment-timezone/0.5.27/moment-timezone-with-data.min.js"></script>
+<script>
+var x = new moment('2022-2-20')
+  var y = new moment('2022-2-28')
+var now=new moment()
+  var x1 = moment.duration(now.diff(x))
+  var y1 = moment.duration(now.diff(y))
+
+var html='<span style="color:red">0 failure since PoS launch, our server running ' +parseInt(x1.asDays())+' days'+',PoS  launched  ' +parseInt(y1.asDays())+' days</span>, meanwhile, we maintained the PoW Test network for more than 1 year, here is our test address <a href="https://testnet.confluxscan.io/address/cfxtest:aamjxdgz4m84hjvf2s9rmw5uzd4dkh8aa6krdsh0ep?tab=mined-blocks">https://testnet.confluxscan.io/address/cfxtest:aamjxdgz4m84hjvf2s9rmw5uzd4dkh8aa6krdsh0ep?tab=mined-blocks </a> ';
+$('#promise').html(html);
+</script>
+	<script src="//cdn.staticfile.org/jquery/1.8.2/jquery.min.js"></script>
+    <script src="app/vue.global.js"></script>
+    <script src='app/big.min.js'></script>
+    <script src="app/js-conflux-sdk.umd.min.js"></script>
+    <script src="app/ethers-5.2.umd.min.js" type="application/javascript"></script>
+    <script src="app/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="app/chart.js"></script>
+    <script src="app/PoolABI.js?id=2256"></script>
+    <script src="app/PoSPoolContract.js?id=2256"></script>
+    <script src="app/utils.js?id=2256"></script>
+    <script src="app/header2.js?id=2256"></script>
+    <script src="app/main.js?id=2256"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W9RSB2BS8T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-W9RSB2BS8T');
+    </script>
+  </body>
+</html>
+<style>
+
+.active{
+color:#000 ! important;
+    background-color: yellow;
+}
+</style>
+ 

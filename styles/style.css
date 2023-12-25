@@ -1,0 +1,25 @@
+.h-num {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.intro-title {
+  color: rgb(86, 90, 105);
+}
+
+.b-shadow {
+  box-shadow: rgb(0 0 0 / 5%) 0px 6px 10px;
+}
+
+.table>:not(:first-child) {
+  border-top: 2px solid #dee2e6;
+}
+
+.left-icon {
+  width: 50px;
+}
+
+.footer-item {
+  display: inline-block;
+  width: 150px;
+}

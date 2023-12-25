@@ -1,0 +1,1181 @@
+﻿
+<!DOCTYPE html>
+<html xmlns:itranswarp="http://www.itranswarp.com/" xmlns:wb="https://open.weibo.com/wb" lang="zh_CN">
+<!--
+-->
+
+<head>
+	<meta charset="utf-8" />
+	<title>助记词 - 廖雪峰的官方网站</title>
+		<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="javascript,node,jquery,git,python,java,sql,linux,bitcoin,教程,软件,编程,开发,运维,云计算,网络,互联网,比特币,智能合约,数字货币" />
+	<meta name="description" content="研究互联网产品和技术，提供原创中文精品教程" />
+	<meta property="x-nav" content=" /wiki/1207298049439968 " />
+
+			
+	
+	<meta property="og:ad" content="true" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.liaoxuefeng.com/wiki/1207298049439968/1207320517404448" />
+<meta property="og:title" content="助记词" />
+<meta property="og:description" content="零基础入门区块链，顺便学习写代码。" />
+<meta property="og:image" content="https://www.liaoxuefeng.com/files/attachments/1207298048410688/l" />
+<meta property="og:tag" content="blockchain" />
+
+	<!-- static resources -->
+
+
+<link rel="stylesheet" href="/static/css/bundle.css?v=2.1-0921f18-2022-12-02-10-23">
+<script src="/liao/bundle.js?v=2.1-0921f18-2022-12-02-10-23"></script>
+
+
+<!-- // static resources -->
+
+	<link rel="stylesheet" href="/static/css/itranswarp.css?v=2.1-0921f18-2022-12-02-10-23">
+
+	<!-- override font family -->
+	<style>
+		html,body,h1,h2,h3,h4,h5,h6,.uk-navbar-nav>li>a {
+		font-family: "SF Pro SC","SF Pro Text","SF Pro Icons","PingFang SC","Helvetica Neue","Helvetica","Arial",sans-serif	}
+		</style>
+
+	<script src="/liao/shared.js?v=2.1-0921f18-2022-12-02-10-23"></script>
+	<script src="/liao/itranswarp.js?v=2.1-0921f18-2022-12-02-10-23"></script>
+	<script src="/liao/extension.js?v=2.1-0921f18-2022-12-02-10-23"></script>
+
+	<!-- comment template -->
+
+<script id="tplComment" type="text/plain">
+	<div class="uk-comment">
+		<div class="uk-comment-header" style="margin-bottom:0">
+			<a target="_blank" href="/user/{ userId }"><img class="uk-comment-avatar uk-border-circle x-avatar" src="{ userImageUrl }" width="50" height="50" alt=""></a>
+			<h4 class="uk-comment-title"><a target="_blank" href="/discuss/{ boardId }/{ id }">{ name }</a></h4>
+			<div class="uk-comment-meta">
+				<a target="_blank" href="/user/{ userId }">{ userName }</a>
+				created at { createdAt.toSmartDate() }, Last updated at { updatedAt.toSmartDate() }
+				<span class="x-can-delete">
+                	[<a href="javascript:deleteTopic('{ id }')" class="uk-text-danger">删除</a>]
+                	[<a href="javascript:deleteTopicAndLockUser('{ id }', '{ userId }')" class="uk-text-danger">删除并锁定用户</a>]
+                </span>
+			</div>
+		</div>
+		<div class="uk-comment-body x-auto-content">
+			{ content|raw }
+		</div>
+	</div>
+</script>
+
+
+<script id="tplCommentReply" type="text/plain">
+	<div class="uk-comment">
+		<div class="uk-comment-header" style="margin-bottom:0">
+			<a target="_blank" href="/user/{ userId }"><img class="uk-comment-avatar uk-border-circle x-avatar" src="{ userImageUrl }" width="50" height="50" alt=""></a>
+			<div class="uk-comment-meta"><a target="_blank" href="/user/{ userId }">{ userName }</a></div>
+			<div class="uk-comment-meta">
+				Created at { createdAt.toSmartDate() }
+				<span class="x-can-delete">
+                	[<a href="javascript:deleteReply('{ id }')" class="uk-text-danger">删除</a>]
+                	[<a href="javascript:deleteReplyAndLockUser('{ id }', '{ userId }')" class="uk-text-danger">删除并锁定用户</a>]
+                </span>
+			</div>
+		</div>
+		<div class="uk-comment-body x-auto-content">
+			{ content|raw }
+		</div>
+	</div>
+</script>
+
+<script id="tplCommentInfo" type="text/plain">
+	<li>
+		<div class="x-comment-info">
+			<hr>
+			<a target="_blank" class="uk-button uk-button-small" href="/discuss/{ boardId }/{ id }"><i class="uk-icon-list-ul"></i> 全部讨论</a>
+			&nbsp;
+			<a target="_blank" class="uk-button uk-button-small" href="/discuss/{ boardId }/{ id }#reply"><i class="uk-icon-reply"></i> 回复</a>
+		</div>
+	</li>
+</script>
+
+<script id="tplCommentArea" type="text/plain">
+	<div class="x-display-if-signin">
+		<p><button id="comment-make-button" type="button" class="uk-button uk-button-primary"><i class="uk-icon-comment"></i> 发表评论</button></p>
+		<form id="comment-form" class="uk-form" style="display:none;">
+			<fieldset>
+				<div class="uk-alert uk-alert-danger" style="display:none"></div>
+				<div class="uk-form-row">
+					<label>标题:</label>
+				</div>
+				<div class="uk-form-row">
+					<input type="text" name="name" maxlength="100" style="width:100%">
+				</div>
+				<div class="uk-form-row">
+					<label>内容:</label>
+				</div>
+				<div class="uk-form-row x-textarea">
+				</div>
+				<div class="uk-form-row">
+					<button type="submit" class="uk-button uk-button-primary"><i class="uk-icon-check"></i> 发布</button>
+					&nbsp;&nbsp;
+					<button type="button" class="uk-button x-cancel"><i class="uk-icon-close"></i> 取消</button>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</script>
+
+	<style id="x-doc-style">
+		.x-display-none {
+			display: none;
+		}
+
+		/*  */
+
+		.x-display-if-signin {
+			display: none;
+		}
+
+		/*  */
+
+		.x-can-delete {
+
+			/*  */
+
+			display: none;
+
+			/*  */
+		}
+	</style>
+
+	<script>
+		/* global variables */
+		var g_time = parseFloat('1675391204272');
+
+		/*  */
+		var g_user = null;
+		/*  */
+
+		$(function () {
+			$(window).trigger('resize');
+		});
+
+		// init ads:
+		var g_ads = JSON.parse(decodeURIComponent('%7B%22slots%22%3A%5B%7B%22alias%22%3A%22a%22%2C%22width%22%3A336%2C%22height%22%3A280%2C%22numSlots%22%3A4%2C%22numAutoFill%22%3A4%2C%22adAutoFill%22%3A%22%3Cins%20class%3D%5C%22adsbygoogle%5C%22%20style%3D%5C%22display%3Ainline-block%3Bwidth%3A336px%3Bheight%3A280px%5C%22%20data-ad-client%3D%5C%22ca-pub-6727358730461554%5C%22%20data-ad-slot%3D%5C%228492060710%5C%22%3E%3C%2Fins%3E%5Cn%3Cscript%3E%5Cn%28adsbygoogle%20%3D%20window.adsbygoogle%20%7C%7C%20%5B%5D%29.push%28%7B%7D%29%3B%5Cn%3C%2Fscript%3E%22%2C%22periods%22%3A%5B%7B%22materials%22%3A%5B%5D%7D%5D%7D%2C%7B%22alias%22%3A%22b%22%2C%22width%22%3A300%2C%22height%22%3A600%2C%22numSlots%22%3A2%2C%22numAutoFill%22%3A2%2C%22adAutoFill%22%3A%22%3Cins%20class%3D%5C%22adsbygoogle%5C%22%20style%3D%5C%22display%3Ainline-block%3Bwidth%3A300px%3Bheight%3A600px%5C%22%20data-ad-client%3D%5C%22ca-pub-6727358730461554%5C%22%20data-ad-slot%3D%5C%224769867116%5C%22%3E%3C%2Fins%3E%5Cn%5Cn%3Cscript%3E%5Cn%28adsbygoogle%20%3D%20window.adsbygoogle%20%7C%7C%20%5B%5D%29.push%28%7B%7D%29%3B%5Cn%3C%2Fscript%3E%22%2C%22periods%22%3A%5B%5D%7D%5D%7D'));
+		$(function () {
+			initSponsors(g_ads);
+			console.log('init ad ok.');
+		});
+	</script>
+
+	<style>
+    .x-wiki-visible {
+        display: block;
+    }
+
+    .x-can-edit {
+        /*  */
+        display: none;
+        /*  */
+    }
+</style>
+
+<script>
+
+    loadComments('1207320517404448');
+
+    var
+        comment_type = '1207320517404448' === '1207298049439968' ? 'wiki' : 'wikipage',
+        comment_ref_id = '1207320517404448',
+        comment_tag = 'blockchain';
+
+    function onAuthSuccess() {
+        initCommentArea(comment_type, comment_ref_id, comment_tag);
+    }
+
+    $(function () {
+        if (g_user !== null) {
+            initCommentArea(comment_type, comment_ref_id, comment_tag);
+        }
+    });
+
+
+
+    $(function () {
+        $('#1207320517404448').addClass('uk-active');
+        $('#off-1207320517404448').addClass('uk-active');
+        // expand current:
+        expandActiveNode();
+        // add prev, next:
+        var prev = getPrevNode();
+        var next = getNextNode();
+        if (prev) {
+            $('div.x-wiki-prev-next').append("<a href=\"" + prev.find("a").attr("href") + "\" class=\"uk-button uk-button-primary\"><i class=\"uk-icon-chevron-left\"></i> 上一页</a>");
+        }
+        if (next) {
+            $('div.x-wiki-prev-next').append("<a href=\"" + next.find("a").attr("href") + "\" class=\"uk-button uk-button-primary uk-float-right\">下一页 <i class=\"uk-icon-chevron-right\"></i></a>");
+        }
+        $('div.x-wiki-prev-next').after('<hr>');
+    });
+
+    function getPrevNode() {
+        var activeNode = $('#1207320517404448');
+        var prev = activeNode.prev('div');
+        var lastChild;
+        if (prev.get(0)) {
+            lastChild = prev.find('div:last');
+            if (lastChild.get(0)) {
+                return lastChild;
+            }
+            return prev;
+        }
+        prev = activeNode.parent('div');
+        if (prev.get(0)) {
+            return prev;
+        }
+        return null;
+    }
+
+    function getNextNode() {
+        var activeNode = $('#1207320517404448');
+        var next = activeNode.find('div:first');
+        var node;
+        if (next.get(0)) {
+            return next;
+        }
+        next = activeNode.next('div');
+        if (next.get(0)) {
+            return next;
+        }
+        node = activeNode;
+        for (; ;) {
+            node = node.parent('div');
+            if (node.get(0)) {
+                next = node.next('div');
+                if (next.get(0)) {
+                    return next;
+                }
+            } else {
+                break;
+            }
+        }
+        return null;
+    }
+
+    function expandActiveNode() {
+        var activeNode = $('#1207320517404448');
+        for (; ;) {
+            i = activeNode.find('i').get(0);
+            if (i) {
+                expandWikiNode(i);
+            }
+            activeNode = activeNode.parent();
+            if (!activeNode.is('div')) {
+                break;
+            }
+        }
+    }
+
+    function toggleWikiNode(icon) {
+        var
+            $i = $(icon),
+            $div = $i.parent(),
+            expand = $div.attr('expand');
+        if (expand === 'true') {
+            collapseWikiNode(icon);
+        } else {
+            expandWikiNode(icon);
+        }
+    }
+
+    function collapseWikiNode(icon, rec) {
+        var
+            $i = $(icon),
+            $div = $i.parent();
+        $div.attr('expand', 'false');
+        $i.removeClass('uk-icon-minus-square-o');
+        $i.addClass('uk-icon-plus-square-o');
+        $div.find('>div').hide();
+        if (rec) {
+            $div.find('>div>i').each(function () {
+                collapseWikiNode(this, rec);
+            });
+        }
+    }
+
+    function expandWikiNode(icon, rec) {
+        var
+            $i = $(icon),
+            $div = $i.parent();
+        $div.attr('expand', 'true');
+        $i.removeClass('uk-icon-plus-square-o');
+        $i.addClass('uk-icon-minus-square-o');
+        $div.find('>div').show();
+        if (rec) {
+            $div.find('>div>i').each(function () {
+                expandWikiNode(this, rec);
+            });
+        }
+    }
+
+</script>
+
+	<script>
+		console.log('init itranswarp ok.');
+	</script>
+
+	<!-- BEGIN custom_header -->
+	<style>
+@font-face{
+  font-family: 'JetBrainsMono';
+  src: url('https://liaoxuefeng-static.oss-cn-hangzhou.aliyuncs.com/JetBrainsMono/JetBrainsMono-Regular.woff2') format('woff2'),
+       url('https://liaoxuefeng-static.oss-cn-hangzhou.aliyuncs.com/JetBrainsMono/JetBrainsMono-Regular.woff') format('woff'),
+       url('https://liaoxuefeng-static.oss-cn-hangzhou.aliyuncs.com/JetBrainsMono/JetBrainsMono-Regular.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+</style>
+
+<script src="//tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+if ($('meta[property="og:tag"]').attr('content').indexOf('金融交易') >= 0) {
+    $(function () {
+        $('.x-main-content').prepend('<div class="uk-alert uk-alert-danger"><i class="uk-icon-warning"></i> 注：本文是普及金融市场交易的基础知识，不是为了鼓励大家去炒股炒币。相反，通过学习证券知识，理解衍生品原理，可以更好地认识市场风险，自觉放弃杠杆赌博暴富等不切实际的幻想，避免落入各种理财、带单、空气币等诈骗套路。本文一切内容均不构成任何投资意见或建议。</div>');
+    });
+}
+</script>
+
+<script>
+if ($('meta[property="og:ad"]').attr('content') === 'true') {
+    var _tag = document.createElement('script');
+    _tag.type = 'text/javascript';
+    _tag.async = true;
+    _tag.src = '//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+    $('head').append(_tag);
+}
+
+  $(function () {
+    $('#x-content-top').append('<div class="uk-alert uk-alert-danger"><i class="uk-icon-warning"></i> 请注意：此区块链教程为技术教程，教程的所有内容均不构成任何投资比特币或其他数字货币的意见和建议，也不赞成个人炒作任何数字货币！</div>');
+    $.ajax({ url: '/liao/blockchain-lib.js', dataType: 'script', cache: true });
+    $.ajax({ url: '/liao/ethers.umd.min.js', dataType: 'script', cache: true });
+  });
+</script>
+
+<script>
+function shareToWeibo() {
+    var url = 'http://service.weibo.com/share/share.php?type=button&ralateUid=1658384301&language=zh_cn&appkey=1391944217&searchPic=false&style=full';
+    url = url + '&title=' + encodeURIComponent(document.title);
+    url = url + '&url=' + encodeURIComponent(location.href);
+    url = url + '&pic=' + encodeURIComponent($('meta[property="og:image"]').attr('content'));
+    window.open(url, 'share_liaoxuefeng_com', 'top=200,left=400,width=600,height=380,directories=no,menubar=no,toolbar=no,resizable=no');
+}
+
+var SHARE_TO_WEIBO = '<h3>还可以分享给朋友：</h3><p><a href="#0" onclick="shareToWeibo()" class="uk-button uk-button-danger"><i class="uk-icon-weibo"></i> 分享到微博</button></p>';
+
+var ZAN_ONLY = '<h3>读后有收获可以支付宝请作者喝咖啡：</h3><p><img src="/files/attachments/1422670998536258/0"></p>';
+
+</script>
+
+<script>
+  // sql: import alasql
+  if (location.pathname.indexOf('/wiki/1177760294764384') === 0) {
+    $.ajax({
+      url: 'https://liaoxuefeng.gitee.io/learning-js/jslib/alasql.js?v=1',
+      dataType: 'script',
+      cache: true,
+      success: function () {
+        console.log('alasql loaded.');
+        alasql.options.joinstar = 'underscore';
+        var
+          i,
+          classes_data = [['一班'], ['二班'], ['三班'], ['四班']],
+          students_data = [[1, '小明', 'M', 90], [1, '小红', 'F', 95], [1, '小军', 'M', 88], [1, '小米', 'F', 73], [2, '小白', 'F', 81], [2, '小兵', 'M', 55], [2, '小林', 'M', 85], [3, '小新', 'F', 91], [3, '小王', 'M', 89], [3, '小丽', 'F', 88]];
+        alasql('CREATE TABLE classes (id BIGINT NOT NULL AUTO_INCREMENT, name VARCHAR(10) NOT NULL, PRIMARY KEY (id))');
+        alasql('CREATE TABLE students (id BIGINT NOT NULL AUTO_INCREMENT, class_id BIGINT NOT NULL, name VARCHAR(10) NOT NULL, gender CHAR(1) NOT NULL, score BIGINT NOT NULL, PRIMARY KEY (id))');
+        for (i=0; i<classes_data.length; i++) {
+          alasql('INSERT INTO classes (name) VALUES (?)', classes_data[i]);
+        }
+        for (i=0; i<students_data.length; i++) {
+          alasql('INSERT INTO students (class_id, name, gender, score) VALUES (?, ?, ?, ?)', students_data[i]);
+        }
+      }
+    });
+  }
+</script>
+
+<script>
+// java practice:
+var giteelink = '<a href="https://gitee.com/" target="_blank"><img style="height:20px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE4AAAAYCAMAAABjozvFAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAMAUExURf////zz8//9/f34+PXMzPbV1Pba2f////TJyPPFxf38+////wAAAMcdI7sAAMMADQEBAbgAALwAALoAALkAAL8AAMopLskgJsgiJ8cfJfbS0vzy8ckoLLMAAM87Pd3d3cgbInt7e8YPGnBwcMcXH4CAgL0AALcAAOB7et1tboWFhUNDQwcHB8MAD1ZWVsEAAdXV1cYMGb4AABQUFLUAAMQBEwMDA+Hh4aysrJ2dnTIyMh4eHvT09Ombmvn5+cDAwKGhofv7+7YAADQ0NN9yc/ro6aWlpcIACsAAABcXF5KSknd3d0dHRw0NDWxsbMMAC/G8vO+0syUlJcUUHBwcHEVFRVBQUPX19cQAEf7+/kBAQM7OzlNTU8AABsIABrQAAP329scRG8ssL91ubvPz86ioqOqfn8rKykJCQsXFxdvb25+fn6Kior29vQkJCZWVldtlZeKCgampqSYmJhEREQ8PD7e3tycnJ7S0tNFCROuhoP3y8pubm4yMjGZmZsjIyE1NTfLAwPrj5ImJicMHFe/v73FxcdHR0QwMDNra2uJ/fuypqNA/QJaWln5+fnR0dPnf3mNjY1lZWUtLS+qjopiYmCoqKsgjKNZUVeaQkDY2NiIiIs01OOrq6swvMsUKF8EABN92djw8POB7e8nJycojKM45PP3z8s87PvfX1u+0tMQEFOTk5IKCgu7u7tlhYeulpNhdXTg4OPfZ2PTNzPnf4BoaGqSkpPTKyuyoqMHBweyrrNfX1/Dw8E9PT8/Pz42Nja6uroiIiGFhYf37+ttkZHp6eufn5+SLi0FBQYaGhnNzc5mZmdpgYOB4d8IAEVhYWFJSUsklKcvLy8QPGvXR0OiYmbKyso+Pj7GxsdLS0nx8fMcXHhYWFv79/eB3d8EADOeUlPXT0uF6eV1dXeSKihISEsTExIODg9JHST4+Pvvv7/rn5/zx8NxpatJFRt1wcfvq6q4AAPjc2990dasAAMYbIddYWfXOze2ur++3t////uF+ff3399hbXMkeJnevGJYAAAALdFJOU/Ly8vLy8vLl8vLy6tdKuQAAA5RJREFUOMullWd4FFUUhhdRg55vNtsLapLVZXdJ7zFogBTSe4f0Qu8dlA4CAULvvXcQ7KiAXYqCgmLHCtbYu1ju3JnZzY/wrIHvx73n3Oebd55zq8pH5VaHmzrdcuPNquuQj4oUdd5iCQlLrzq78UQvalsHG8mbVArvjFFb/UbR+0UR6dqQhDato4aN7eGVJuFa1ifNMgtcVnNV0otteWOB0azbH+cV90K91rwqxKGWpEtzjmjD+1xwTk+i/rGagd5wrzpXmdU7fuva0JWpoWFBTE3C1b4YDNztBTfdabfoVntWoJ82JP1RJZk6O3vKM5Mzm2hD86QyGjgAmBboz8b7Twla+hZ3xGUFHRviwfVeoDMbN7Ls4l8S4ZLekjRSpi2EpHtoETCYpGQA0UweLGKOCbFilO3GPWwsEgzL6e8r/+70Y9rtt8MupFnu57RwoLi5BFjZTLlAIAXNBTLGD6ehQFToSqAH+QPDXgsC+iq4+/RCXfUe+rPG6LyDy2gSAnT5HPcS8A6RBq8Q3QW8R1QJsAWhEkSxthhZtAQaVvtaJCu4FL01onwP/aHb988Vl8u1bdvEciFAfYjjhgOTqUmDUxzXhSgUSCU6qkHUksrPLmMZnYRmaWVoBtBdxh3WCXf6dqa9hhh5vi5oGa4fD7snA6U5QJyCe12cQbFCSbmULEfrFNyDagmnj/m9tnYXY6zRu3E0SrSOFveGhFvGN8q9wRi7vWJ7eEUi9QEmzJka/m6jUuw8g1XEFTjqzPX1v5p+EHGCej6nPRCFz8su8tBdbC5LSqFJlf53mg+32ncF6gARd+RHvTM6+pd9LfSxQbA7HlFWNvuLhba35xA9D8wmyhQ3TTwdZ90Hhcgoo4NjgLnjAX8F1ytvlohb/P0Wl+vnlJ+IPtVbIyfKP5wmT80kCgTiiRofYkk3onHFfDeyEgd1E6Pgp92nYoShzneG56h88tEmS/RyKd6wNbikz1drNRhDNPRJPtTXdqCJdYmpWTb5hhlnsz2b6DlkMxyb8/Jv+7pF1K5vCjZFmnSmWsm5FetY2zsHj9H/kHwFJNREWE23c5mskdWmNMMTsoGtW2nmzEJgSDtwlBIdFuPLlVduP2fUHlEML/OJQeHj1B4cjVSr7dL9aYnQGp9qZTm/IjC+gqh9OJq+U2eI3FwV5tCGrV5M1yiV5+mh/G+/81u/+8sP36Rrl8qn9cN2a8cbVNf1MP4HCWMMeoGMWdIAAAAASUVORK5CYII="/></a>';
+if (location.pathname.indexOf('/wiki/1252599548343744') === 0) {
+    $(function () {
+        $('a').each(function () {
+            var
+                $a = $(this),
+                url = $a.attr('href');
+            if (url && url.indexOf('https://gitee.com/liaoxuefeng/learn-java/raw/master/practices/') === 0) {
+                var
+                    text = $a.text(),
+                    h = '从' + giteelink + '下载练习：<a href="' + url.replace(/\/raw/, '/blob') + '?utm_source=blog_lxf">' + text + '</a> （推荐使用<a target="_blank" href="/wiki/1252599548343744/1266092093733664">IDE练习插件</a>快速下载）';
+                $a.replaceWith(h);
+            }
+        });
+    });
+}
+
+if (location.pathname.indexOf('/wiki/896043488029600') === 0) {
+    $(function () {
+        $('#x-wiki-index #1163625339727712').prepend('<span style="position:absolute;margin-left:-1.1em;margin-top:3px;display:inline-block;width:16px;height:24px;background-repeat:no-repeat;background-size:contain;background-position:center;background-image:url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAGJUExURQAAAMYcI8ccI8ccI8cdI8ccI8YcJcYcIsccI8wZJsYdI8YcIscdIscdI8QaIMcdI8QaJcYcIsYdI8YcJMYdI8YdI8ccI8YcI8YcIr8fH8QdJ8MeHsgkJMcdI8cdIsccIsccI8YcI8YdI8kfH8YdIsYcIsgdJMoeJf8AAMYdI8ccJMYdI8YdIsYeIskdIsccIsYcIsccIscbIsccIsccI8YcIsYcIsYdIsccIsYcIcUcIsYcI/8AAMcdIscdI8ccI8cdI8cdI8cdIscdI8YdI8geJMYcI8cdIscbIcYdI8cdIscbJcYcIscdI8YcHMYdIsYeJMYdIsUcJcccIsYcIsccIsccI8cdI8YcIsYdIskdI8MZIsYeIccdIscdIsYcI7YkJMYcIcccIsYdJMYcIskaIcccIsYdIscfH8ccI8YcIsYcI8ccI8YdIsccIsYcI8UfJMwzM8cdI8wZGcYcI8kaKMgcI8YcI8YdIsccIscdI8YcI8cdIccdI8weHsYcIsYdIsYdIscdIxtFXPcAAACCdFJOUwCWj7z81xve9xTZ1NvtJ9gwf6w/p3qz5rAIGhEOTvuF6bT+GL75RiIB2mrQjDs0+NVhJY7vdVrsxTZZhwKTybuBV+TKtlS6uFNWwTe50gmVVeM+fKvc4IB2ZyseRPKS5wdbWE36JuX0IO7x6HPizpAxBfYKkRN0vcfNcstFphmii5pZBD0wAAABdklEQVQ4y8XUZVfDMBQG4MAYg7lvjI0p7u7u7u7u7g795aS5bUiz7COH98v63vMsJ+lpi9D/JSfUOtdk6vDXtuSmIivuPIlmzCU0G5I2/q0kYvdJfPZ2OdMsibKjMaOSONuMmZhWp7EMNXkxuVt/UTuIE4c9/pGp5NZqwaNOatbA2ILaferl4bLa3MQcx7nDGOVpr1IC+QSd4cu3z+80JV/vsH45oG5odoSuBAecBZROSlY2QmEB8gLyknJzj9Ad/o0YDSTGU0BVzCnISnjN82v6SByQeSM0C4suuFsgrUOZZ5GNR3VQBlkkvUZ1ukf9A0XFgCY1CPJE0QCgaoouKXrBczO5CgOqoSikT+hwEs8OPD4CXqDssE9FmnQRY1TrlNwOuRfEBQt56MAp132WBMrAmIroaLUSd4vNoMa8qR5ghvnjcIpn3KPZQYPQOLiz9AvMUtLbGRzhiLlQ9J4PjTNkoaQtxSfDWu8s7Yn4TNHFij/6bv0A7Xb98tZz0gYAAAAASUVORK5CYII=\')"></span>');
+    });
+    $(function () {
+        $('.x-wiki-info').append('<div style="float:right"><a target="git-cheat-sheet" href="https://liaoxuefeng.gitee.io/resource.liaoxuefeng.com/git/git-cheat-sheet.html#" style="font-size:1.2em"><i class="uk-icon-info-circle"></i></a></div>');
+    });
+}
+</script>
+
+<script>
+// add share:
+$(function () {
+  if (location.pathname.indexOf('/wiki/')===0) {
+    var
+        tag = $('meta[property="og:tag"]').attr('content');
+        zan = ZAN_ONLY;
+    $('.x-wiki-content').find('a[href^=http]').attr('target', '_blank');
+    $('.x-wiki-content').after(zan + SHARE_TO_WEIBO);
+  }
+});
+</script>
+
+<script>
+// article: add share:
+$(function () {
+  if (location.pathname.indexOf('/article/')===0) {
+    $('.x-article-content').find('a[href^=http]').attr('target', '_blank');
+    $('.x-article-content').after(ZAN_ONLY + SHARE_TO_WEIBO);
+  }
+});
+</script>
+
+<script>
+// footer:
+$(function() {
+  $('.x-footer-copyright').find('p').append('<br>本网站运行在<a target="_blank" href="https://www.aliyun.com/?source=5176.11533457&userCode=cz36baxa">阿里云</a>上并使用<a target="_blank" href="https://www.aliyun.com/product/cdn?source=5176.11533457&userCode=cz36baxa">阿里云CDN</a>加速。');
+  $('.x-footer').append('<hr><div style="text-align:center"><p><a href="https://beian.miit.gov.cn" target="_blank">京ICP备13005808号-11</a> 本网站内容全部为原创，谢绝转载。友情链接: <a href="http://www.shi-ci.com" target="_blank">中华诗词</a> - <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=cz36baxa" target="_blank">阿里云</a> - <a href="http://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book.html" target="_blank">SICP</a> - <a href="http://www.4clojure.com/" target="_blank">4clojure</a></p></div>');
+});
+</script>
+
+<script>
+// baidu tongji:
+var _hmt = _hmt || [];
+(function () {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?2efddd14a5f2b304677462d06fb4f964";
+  hm.async = "async";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+	<!-- END custom_header -->
+
+	<script>
+		console.log('init js ok.');
+	</script>
+
+</head>
+
+<body>
+    <div style="display: none;">
+	<div class="x-goto-top">
+		<div class="x-arrow"></div>
+		<div class="x-stick"></div>
+	</div>
+
+	<div id="header" class="x-navbar uk-navbar uk-navbar-attached">
+		<div class="uk-container x-container">
+			<div id="navbar">
+								<ul class="uk-navbar-nav uk-visible-small">
+					<li><a href="#0" onclick="UIkit.offcanvas.show('#x-offcanvas-left')">目录</a></li>
+				</ul>
+								<a id="brand" href="/" class="uk-navbar-brand uk-visible-large">廖雪峰的官方网站</a>
+				<a id="brand-small" href="/" class="uk-navbar-brand uk-hidden-large"><i class="uk-icon-home"></i></a>
+				<a class="uk-hidden" href="/blog/">Blog</a>
+				<ul id="ul-navbar" class="uk-navbar-nav uk-hidden-small">
+										<li class="x-nav">
+						<a href="/category/895882450960192" >
+							<i class="uk-icon-newspaper-o"></i>							文章						</a>
+					</li>
+										<li class="x-nav">
+						<a href="/wiki/1252599548343744" >
+							<i class="uk-icon-coffee"></i>							Java教程						</a>
+					</li>
+										<li class="x-nav">
+						<a href="/wiki/1016959663602400" >
+							<i class="uk-icon-gg"></i>							Python教程						</a>
+					</li>
+										<li class="x-nav">
+						<a href="/wiki/1022910821149312" >
+							<i class="uk-icon-codepen"></i>							JavaScript教程						</a>
+					</li>
+										<li class="x-nav">
+						<a href="/wiki/1207298049439968" >
+							<i class="uk-icon-bitcoin"></i>							区块链教程						</a>
+					</li>
+										<li class="x-nav">
+						<a href="/wiki/1177760294764384" >
+							<i class="uk-icon-database"></i>							SQL教程						</a>
+					</li>
+										<li class="x-nav">
+						<a href="/wiki/896043488029600" >
+							<i class="uk-icon-code-fork"></i>							Git教程						</a>
+					</li>
+										<li class="x-nav">
+						<a href="/discuss" >
+							<i class="uk-icon-commenting-o"></i>							问答						</a>
+					</li>
+										<li id="navbar-more" class="uk-parent" data-uk-dropdown style="display:none">
+						<a href="#0"><i class="uk-icon-chevron-down"></i> 更多</a>
+						<div class="uk-dropdown uk-dropdown-navbar">
+							<ul id="ul-navbar-more" class="uk-nav uk-nav-navbar">
+																<li class="x-nav">
+									<a href="/category/895882450960192" >
+										<i class="uk-icon-newspaper-o"></i>										文章									</a>
+								</li>
+																<li class="x-nav">
+									<a href="/wiki/1252599548343744" >
+										<i class="uk-icon-coffee"></i>										Java教程									</a>
+								</li>
+																<li class="x-nav">
+									<a href="/wiki/1016959663602400" >
+										<i class="uk-icon-gg"></i>										Python教程									</a>
+								</li>
+																<li class="x-nav">
+									<a href="/wiki/1022910821149312" >
+										<i class="uk-icon-codepen"></i>										JavaScript教程									</a>
+								</li>
+																<li class="x-nav">
+									<a href="/wiki/1207298049439968" >
+										<i class="uk-icon-bitcoin"></i>										区块链教程									</a>
+								</li>
+																<li class="x-nav">
+									<a href="/wiki/1177760294764384" >
+										<i class="uk-icon-database"></i>										SQL教程									</a>
+								</li>
+																<li class="x-nav">
+									<a href="/wiki/896043488029600" >
+										<i class="uk-icon-code-fork"></i>										Git教程									</a>
+								</li>
+																<li class="x-nav">
+									<a href="/discuss" >
+										<i class="uk-icon-commenting-o"></i>										问答									</a>
+								</li>
+															</ul>
+						</div>
+					</li>
+				</ul>
+				<ul id="ul-navbar-small" class="uk-navbar-nav uk-visible-small">
+					<li class="uk-parent" data-uk-dropdown>
+						<a href="#0"><i class="uk-icon-navicon"></i></a>
+						<div class="uk-dropdown uk-dropdown-navbar">
+							<ul class="uk-nav uk-nav-navbar">
+																<li>
+									<a href="/category/895882450960192" >
+										<i class="uk-icon-newspaper-o"></i>										文章									</a>
+								</li>
+																<li>
+									<a href="/wiki/1252599548343744" >
+										<i class="uk-icon-coffee"></i>										Java教程									</a>
+								</li>
+																<li>
+									<a href="/wiki/1016959663602400" >
+										<i class="uk-icon-gg"></i>										Python教程									</a>
+								</li>
+																<li>
+									<a href="/wiki/1022910821149312" >
+										<i class="uk-icon-codepen"></i>										JavaScript教程									</a>
+								</li>
+																<li>
+									<a href="/wiki/1207298049439968" >
+										<i class="uk-icon-bitcoin"></i>										区块链教程									</a>
+								</li>
+																<li>
+									<a href="/wiki/1177760294764384" >
+										<i class="uk-icon-database"></i>										SQL教程									</a>
+								</li>
+																<li>
+									<a href="/wiki/896043488029600" >
+										<i class="uk-icon-code-fork"></i>										Git教程									</a>
+								</li>
+																<li>
+									<a href="/discuss" >
+										<i class="uk-icon-commenting-o"></i>										问答									</a>
+								</li>
+															</ul>
+						</div>
+					</li>
+				</ul>
+
+				<div id="navbar-user-info" class="uk-navbar-flip">
+					<ul class="uk-navbar-nav">
+												<li class="uk-visible-small">
+							<a href="/search"><i class="uk-icon-search"></i></a>
+						</li>
+						<li class="uk-hidden-small">
+							<form action="/search" class="uk-form uk-display-inline-block" style="margin: 8px 8px">
+								<div class="uk-form-icon">
+									<i class="uk-icon-search"></i>
+									<input type="text" name="q" placeholder="Search" class="uk-form-width-medium">
+								</div>
+							</form>
+						</li>
+						
+						<li class="uk-parent x-display-if-signin" data-uk-dropdown>
+							<a href="#0"><i class="uk-icon-user"></i><span class="x-hidden-tiny">&nbsp;</span><span
+									class="x-user-name x-hidden-tiny"></span></a>
+							<div class="uk-dropdown uk-dropdown-navbar">
+								<ul class="uk-nav uk-nav-navbar">
+									<li><a target="_blank" href="/profile"><i class="uk-icon-cog"></i> 个人资料</a></li>
+									<li class="uk-nav-divider"></li>
+																											<li><a href="/auth/signout"><i class="uk-icon-power-off"></i> 登出</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="x-display-if-not-signin uk-hidden-small"><a href="/auth/signin"><i class="uk-icon-sign-in"></i> 登录</a></li>
+						<li class="x-display-if-not-signin uk-visible-small"><a href="/auth/signin"><i class="uk-icon-sign-in"></i></a></li>
+						<li class="uk-parent" data-uk-dropdown>
+							<a href="#0"><i class="uk-icon-globe"></i></a>
+							<div class="uk-dropdown uk-dropdown-navbar">
+								<ul class="uk-nav uk-nav-navbar">
+																		<li><a href="/locale/en">English</a></li>
+																		<li><a href="/locale/zh_CN">简体中文</a></li>
+																	</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div><!-- // header -->
+
+	<div id="main">
+		<div class="x-placeholder-v">
+			<!-- placeholder -->
+		</div>
+		<div class="x-placeholder">
+			<!-- placeholder -->
+		</div>
+		<div class="uk-container x-container">
+			<div class="uk-grid">
+				<div id="x-body-top" class="uk-width-1-1">
+					<!-- __snippet__.bodyTop -->
+										<!-- // __snippet__.bodyTop -->
+				</div>
+				<div class="uk-width-1-1">
+					<div class="uk-flex">
+												<div class="uk-flex-item-none x-sidebar-left">
+							<div id="x-sidebar-left">
+								<div id="x-sidebar-left-top">
+									<!-- __snippet__.sidebarLeftTop -->
+																		<!-- // __snippet__.sidebarLeftTop -->
+								</div>
+								<div id="x-sidebar-left-content" class="x-sidebar-left-content">
+									<div class="uk-float-right" style="padding-top:5px">
+    <a href="#0" onclick="expandWikiNode($('#x-wiki-index>div>i').get(0), true)" style="margin-left:5px"><i
+            class="uk-icon-expand"></i></a>
+    <a href="#0" onclick="collapseWikiNode($('#x-wiki-index>div>i').get(0), true);expandActiveNode()"
+        style="margin-left:5px"><i class="uk-icon-dot-circle-o"></i></a>
+    <a href="#0" onclick="collapseWikiNode($('#x-wiki-index>div>i').get(0), true)" style="margin-left:5px"><i
+            class="uk-icon-compress"></i></a>
+</div>
+<ul class="uk-nav uk-nav-side">
+    <li class="uk-nav-header">目录</li>
+</ul>
+<ul id="x-wiki-index" class="uk-nav uk-nav-side" style="margin-right:-15px;">
+    <div id="1207298049439968" depth="0" style="position:relative;margin-left:15px;">
+        <i onclick="toggleWikiNode(this)" class="uk-icon-plus-square-o"
+            style="position:absolute;margin-left:-1em;padding-top:10px;"></i>
+        <a href="/wiki/1207298049439968" class="x-wiki-index-item">区块链教程</a>
+        <div id="1207297567093664" depth="1" style="display:none;position:relative;margin-left:15px;">
+        <i onclick="toggleWikiNode(this)" class="uk-icon-plus-square-o"
+        style="position:absolute;margin-left:-1em;padding-top:10px;"></i>
+    <a href="/wiki/1207298049439968/1207297567093664" class="x-wiki-index-item">比特币</a>
+    <div id="1311929706479649" depth="2" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1311929706479649" class="x-wiki-index-item">区块链原理</a>
+    </div>
+<div id="1311929746325537" depth="2" style="display:none;position:relative;margin-left:15px;">
+        <i onclick="toggleWikiNode(this)" class="uk-icon-plus-square-o"
+        style="position:absolute;margin-left:-1em;padding-top:10px;"></i>
+    <a href="/wiki/1207298049439968/1311929746325537" class="x-wiki-index-item">P2P交易原理</a>
+    <div id="1210197145906976" depth="3" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1210197145906976" class="x-wiki-index-item">私钥</a>
+    </div>
+<div id="1210215537429856" depth="3" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1210215537429856" class="x-wiki-index-item">公钥和地址</a>
+    </div>
+<div id="1207687429747616" depth="3" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1207687429747616" class="x-wiki-index-item">签名</a>
+    </div>
+    </div>
+<div id="1311929771491361" depth="2" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1311929771491361" class="x-wiki-index-item">挖矿原理</a>
+    </div>
+<div id="1311929802948641" depth="2" style="display:none;position:relative;margin-left:15px;">
+        <i onclick="toggleWikiNode(this)" class="uk-icon-plus-square-o"
+        style="position:absolute;margin-left:-1em;padding-top:10px;"></i>
+    <a href="/wiki/1207298049439968/1311929802948641" class="x-wiki-index-item">可编程支付原理</a>
+    <div id="1207315329092960" depth="3" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1207315329092960" class="x-wiki-index-item">多重签名</a>
+    </div>
+    </div>
+<div id="1207298275932480" depth="2" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1207298275932480" class="x-wiki-index-item">UTXO模型</a>
+    </div>
+<div id="1207366165169216" depth="2" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1207366165169216" class="x-wiki-index-item">Segwit地址</a>
+    </div>
+<div id="1207298278803712" depth="2" style="display:none;position:relative;margin-left:15px;">
+        <i onclick="toggleWikiNode(this)" class="uk-icon-plus-square-o"
+        style="position:absolute;margin-left:-1em;padding-top:10px;"></i>
+    <a href="/wiki/1207298049439968/1207298278803712" class="x-wiki-index-item">HD钱包</a>
+    <div id="1207319981455456" depth="3" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1207319981455456" class="x-wiki-index-item">钱包层级</a>
+    </div>
+<div id="1207320517404448" depth="3" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1207320517404448" class="x-wiki-index-item">助记词</a>
+    </div>
+<div id="1364939807653921" depth="3" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1364939807653921" class="x-wiki-index-item">地址监控</a>
+    </div>
+    </div>
+    </div>
+<div id="1207298440612096" depth="1" style="display:none;position:relative;margin-left:15px;">
+        <i onclick="toggleWikiNode(this)" class="uk-icon-plus-square-o"
+        style="position:absolute;margin-left:-1em;padding-top:10px;"></i>
+    <a href="/wiki/1207298049439968/1207298440612096" class="x-wiki-index-item">以太坊</a>
+    <div id="1207298477260480" depth="2" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1207298477260480" class="x-wiki-index-item">账户</a>
+    </div>
+<div id="1207297665661664" depth="2" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1207297665661664" class="x-wiki-index-item">区块结构</a>
+    </div>
+<div id="1207319614454336" depth="2" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1207319614454336" class="x-wiki-index-item">交易</a>
+    </div>
+<div id="1207297939801024" depth="2" style="display:none;position:relative;margin-left:15px;">
+        <i onclick="toggleWikiNode(this)" class="uk-icon-plus-square-o"
+        style="position:absolute;margin-left:-1em;padding-top:10px;"></i>
+    <a href="/wiki/1207298049439968/1207297939801024" class="x-wiki-index-item">智能合约</a>
+    <div id="1207298408350656" depth="3" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1207298408350656" class="x-wiki-index-item">编写合约</a>
+    </div>
+<div id="1207721235839392" depth="3" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1207721235839392" class="x-wiki-index-item">部署合约</a>
+    </div>
+<div id="1207298319818816" depth="3" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1207298319818816" class="x-wiki-index-item">调用合约</a>
+    </div>
+<div id="1207319585094880" depth="3" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1207319585094880" class="x-wiki-index-item">编写Dapp</a>
+    </div>
+<div id="1476267880742945" depth="3" style="display:none;position:relative;margin-left:15px;">
+        <i onclick="toggleWikiNode(this)" class="uk-icon-plus-square-o"
+        style="position:absolute;margin-left:-1em;padding-top:10px;"></i>
+    <a href="/wiki/1207298049439968/1476267880742945" class="x-wiki-index-item">常用合约</a>
+    <div id="1207298073798912" depth="4" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1207298073798912" class="x-wiki-index-item">ERC20</a>
+    </div>
+<div id="1207298512909984" depth="4" style="display:none;position:relative;margin-left:15px;">
+        <a href="/wiki/1207298049439968/1207298512909984" class="x-wiki-index-item">Wrapped Ether</a>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</ul>
+<div class="x-placeholder"></div>
+								</div>
+								<div id="x-sidebar-left-bottom">
+									<!-- __snippet__.sidebarLeftBottom -->
+									<div class="uk-margin-top">
+  <p>关注公众号不定期领红包：</p>
+  <p><img src="/files/attachments/1340208951853121/0"></p>
+  <p>关注微博获取实时动态：</p>
+  <iframe width="100%" height="90" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=5&isTitle=0&noborder=0&isWeibo=0&isFans=0&uid=1658384301&verifier=078cedea&colors=0593d3,ffffff,666666,0593d3,0477ab&dpc=1"></iframe>
+</div>
+<div id="sponsor-b"></div>
+									<!-- // __snippet__.sidebarLeftBottom -->
+								</div>
+							</div>
+						</div>
+												<div class="uk-flex-item-1"
+							style="padding-left:15px; ">
+							<div id="x-content-top">
+								<!-- __snippet__.contentTop -->
+																<!-- // __snippet__.contentTop -->
+							</div>
+							<div id="x-content">
+								<h4>助记词</h4>
+<div class="x-wiki-info">
+	最后更新: <span class="x-smart-datetime" data="1523340975483">...</span>
+	/
+    <span>阅读: 486309</span>
+    <a href="/manage/wiki/wikipage_update?id=1207320517404448"
+        target="_blank" class="x-can-edit uk-text-danger">编辑</a>
+</div>
+
+<hr>
+
+<div class="x-wiki-content x-main-content"><p>从HD钱包的创建方式可知，要创建一个HD钱包，我们必须首先有一个确定的512bit（64字节）的随机数种子。</p>
+<p>如果用电脑生成一个64字节的随机数作为种子当然是可以的，但是恐怕谁也记不住。</p>
+<p>如果自己想一个句子，例如<code>bitcoin is awesome</code>，然后计算SHA-512获得这个64字节的种子，虽然是可行的，但是其安全性取决于自己想的句子到底有多随机。像<code>bitcoin is awesome</code>本质上就是3个英文单词构成的随机数，长度太短，所以安全性非常差。</p>
+<p>为了解决初始化种子的易用性问题，<a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">BIP-39</a>规范提出了一种通过助记词来推算种子的算法：</p>
+<p>以英文单词为例，首先，挑选2048个常用的英文单词，构造一个数组：</p>
+<pre><code>const words = ['abandon', 'ability', 'able', ..., 'zoo'];
+</code></pre>
+<p>然后，生成128~256位随机数，注意随机数的总位数必须是32的倍数。例如，生成的256位随机数以16进制表示为：</p>
+<pre><code>179e5af5ef66e5da5049cd3de0258c5339a722094e0fdbbbe0e96f148ae80924
+</code></pre>
+<p>在随机数末尾加上校验码，校验码取SHA-256的前若干位，并使得总位数凑成11的倍数，即。上述随机数校验码的二进制表示为<code>00010000</code>。</p>
+<p>将随机数+校验码按每11 bit一组，得到范围是0~2047的24个整数，把这24个整数作为索引，就得到了最多24个助记词，例如：</p>
+<pre><code>bleak version runway tell hour unfold donkey defy digital abuse glide please omit much cement sea sweet tenant demise taste emerge inject cause link
+</code></pre>
+<p>由于在生成助记词的过程中引入了校验码，所以，助记词如果弄错了，软件可以提示用户输入的助记词可能不对。</p>
+<p>生成助记词的过程是计算机随机产生的，用户只要记住这些助记词，就可以根据助记词推算出HD钱包的种子。</p>
+<pre><code class="language-!">注意：不要自己挑选助记词，原因一是随机性太差，二是缺少校验。
+</code></pre>
+<p>生成助记词可以使用<a href="https://github.com/bitcoinjs/bip39">bip39</a>这个JavaScript库：</p>
+<pre><code class="language-x-javascript">const bip39 = require('bip39');
+----
+let words = bip39.generateMnemonic(256);
+console.log(words);
+
+console.log('is valid mnemonic? ' + bip39.validateMnemonic(words));
+</code></pre>
+<p>运行上述代码，每次都会得到随机生成的不同的助记词。</p>
+<p>如果想用中文作助记词也是可以的，给<code>generateMnemonic()</code>传入一个中文助记词数组即可：</p>
+<pre><code class="language-x-javascript">const bip39 = require('bip39');
+----
+// 第二个参数rng可以为null:
+var words = bip39.generateMnemonic(256, null, bip39.wordlists.chinese_simplified);
+console.log(words);
+</code></pre>
+<p>注意：同样索引的中文和英文生成的HD种子是不同的。各种语言的助记词定义在<a href="https://github.com/bitcoin/bips/blob/master/bip-0039/bip-0039-wordlists.md">bip-0039-wordlists.md</a>。</p>
+<h3>根据助记词推算种子</h3>
+<p>根据助记词推算种子的算法是PBKDF2，使用的哈希函数是Hmac-SHA512，其中，输入是助记词的UTF-8编码，并设置Key为<code>mnemonic</code>+用户口令，循环2048次，得到最终的64字节种子。上述助记词加上口令<code>bitcoin</code>得到的HD种子是：</p>
+<pre><code>b59a8078d4ac5c05b0c92b775b96a466cd136664bfe14c1d49aff3ccc94d52dfb1d59ee628426192eff5535d6058cb64317ef2992c8b124d0f72af81c9ebfaaa
+</code></pre>
+<p>该种子即为HD钱包的种子。</p>
+<pre><code class="language-!">要特别注意：用户除了需要记住助记词外，还可以额外设置一个口令。HD种子的生成依赖于助记词和口令，丢失助记词或者丢失口令（如果设置了口令的话）都将导致HD钱包丢失！
+</code></pre>
+<p>用JavaScript代码实现为：</p>
+<pre><code class="language-x-javascript">const bip39 = require('bip39');
+----
+let words = bip39.generateMnemonic(256);
+console.log(words);
+
+let seedBuffer = bip39.mnemonicToSeed(words);
+let seedAsHex = seedBuffer.toString('hex');
+// or use bip39.mnemonicToSeedHex(words)
+console.log(seedAsHex);
+</code></pre>
+<p>根据助记词和口令生成HD种子的方法是在<code>mnemonicToSeed()</code>函数中传入password：</p>
+<pre><code class="language-x-javascript">const bip39 = require('bip39');
+----
+let words = bip39.generateMnemonic(256);
+console.log(words);
+
+let password = 'bitcoin';
+
+let seedAsHex = bip39.mnemonicToSeedHex(words, password);
+console.log(seedAsHex);
+</code></pre>
+<p>从助记词算法可知，只要确定了助记词和口令，生成的HD种子就是确定的。</p>
+<p>如果两个人的助记词相同，那么他们的HD种子也是相同的。这也意味着如果把助记词抄在纸上，一旦泄漏，HD种子就泄漏了。</p>
+<p>如果在助记词的基础上设置了口令，那么只知道助记词，不知道口令，也是无法推算出HD种子的。</p>
+<p>把助记词抄在纸上，口令记在脑子里，这样，泄漏了助记词也不会导致HD种子被泄漏，但要牢牢记住口令。</p>
+<p>最后，我们使用助记词+口令的方式来生成一个HD钱包的HD种子并计算出根扩展私钥：</p>
+<pre><code class="language-x-javascript">const
+    bitcoin = require('bitcoinjs-lib'),
+    bip39 = require('bip39');
+----
+let
+    words = 'bleak version runway tell hour unfold donkey defy digital abuse glide please omit much cement sea sweet tenant demise taste emerge inject cause link',
+    password = 'bitcoin';
+
+// 计算seed:
+let seedHex = bip39.mnemonicToSeedHex(words, password);
+console.log('seed: ' + seedHex); // b59a8078...c9ebfaaa
+
+// 生成root:
+let root = bitcoin.HDNode.fromSeedHex(seedHex);
+console.log('xprv: ' + root.toBase58()); // xprv9s21ZrQH...uLgyr9kF
+console.log('xpub: ' + root.neutered().toBase58()); // xpub661MyMwA...oy32fcRG
+
+// 生成派生key:
+let child0 = root.derivePath(&quot;m/44'/0'/0'/0/0&quot;);
+console.log(&quot;prv m/44'/0'/0'/0/0: &quot; + child0.keyPair.toWIF()); // KzuPk3PXKdnd6QwLqUCK38PrXoqJfJmACzxTaa6TFKzPJR7H7AFg
+console.log(&quot;pub m/44'/0'/0'/0/0: &quot; + child0.getAddress()); // 1PwKkrF366RdTuYsS8KWEbGxfP4bikegcS
+</code></pre>
+<p>可以通过<a href="https://iancoleman.io/bip39/">https://iancoleman.io/bip39/</a>在线测试BIP-39并生成HD钱包。请注意，该网站仅供测试使用。生成正式使用的HD钱包必须在<em>可信任的离线环境</em>下操作。</p>
+<h3>小结</h3>
+<p>BIP-39规范通过使用助记词+口令来生成HD钱包的种子，用户只需记忆助记词和口令即可随时恢复HD钱包。</p>
+<p>丢失助记词或者丢失口令均会导致HD钱包丢失。</p>
+</div>
+
+<hr>
+
+<div class="x-wiki-prev-next uk-clearfix"></div>
+
+<div class="x-anchor x-comment-anchor"><a name="comments"></a></div>
+							</div>
+							<div id="x-content-bottom">
+								<!-- __snippet__.contentBottom -->
+								<div id="sponsor-a" class="uk-margin-bottom"></div>
+								<!-- // __snippet__.contentBottom -->
+							</div>
+							<div id="x-content-comment" class="uk-margin-top">
+								<h3>评论</h3>
+
+<ul id="x-comment-list" class="uk-comment-list">
+</ul>
+
+<h3>发表评论</h3>
+
+<div class="x-display-if-not-signin">
+    <p><button type="button" class="uk-button" onclick="showSignin()"><i class="uk-icon-signin"></i> Sign in to
+            make a comment</button></p>
+</div>
+
+<div id="x-comment-area"></div>
+
+							</div>
+						</div>
+											</div>
+				</div>
+
+				<div id="x-body-bottom" class="uk-width-1-1">
+					<!-- __snippet__.bodyBottom -->
+										<!-- // __snippet__.bodyBottom -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+		<div id="x-offcanvas-left" class="uk-offcanvas">
+		<div class="uk-offcanvas-bar">
+			<div class="uk-panel">
+				<ul class="uk-nav uk-nav-side">
+    <li class="uk-nav-header">目录</li>
+</ul>
+<ul class="uk-nav uk-nav-side">
+    <li id="off-1207298049439968"><a href="/wiki/1207298049439968">区块链教程</a></li>
+    <li id="off-1207297567093664" style="margin-left:1em;">
+    <a href="/wiki/1207298049439968/1207297567093664">比特币</a>
+</li>
+<li id="off-1311929706479649" style="margin-left:2em;">
+    <a href="/wiki/1207298049439968/1311929706479649">区块链原理</a>
+</li>
+<li id="off-1311929746325537" style="margin-left:2em;">
+    <a href="/wiki/1207298049439968/1311929746325537">P2P交易原理</a>
+</li>
+<li id="off-1210197145906976" style="margin-left:3em;">
+    <a href="/wiki/1207298049439968/1210197145906976">私钥</a>
+</li>
+<li id="off-1210215537429856" style="margin-left:3em;">
+    <a href="/wiki/1207298049439968/1210215537429856">公钥和地址</a>
+</li>
+<li id="off-1207687429747616" style="margin-left:3em;">
+    <a href="/wiki/1207298049439968/1207687429747616">签名</a>
+</li>
+<li id="off-1311929771491361" style="margin-left:2em;">
+    <a href="/wiki/1207298049439968/1311929771491361">挖矿原理</a>
+</li>
+<li id="off-1311929802948641" style="margin-left:2em;">
+    <a href="/wiki/1207298049439968/1311929802948641">可编程支付原理</a>
+</li>
+<li id="off-1207315329092960" style="margin-left:3em;">
+    <a href="/wiki/1207298049439968/1207315329092960">多重签名</a>
+</li>
+<li id="off-1207298275932480" style="margin-left:2em;">
+    <a href="/wiki/1207298049439968/1207298275932480">UTXO模型</a>
+</li>
+<li id="off-1207366165169216" style="margin-left:2em;">
+    <a href="/wiki/1207298049439968/1207366165169216">Segwit地址</a>
+</li>
+<li id="off-1207298278803712" style="margin-left:2em;">
+    <a href="/wiki/1207298049439968/1207298278803712">HD钱包</a>
+</li>
+<li id="off-1207319981455456" style="margin-left:3em;">
+    <a href="/wiki/1207298049439968/1207319981455456">钱包层级</a>
+</li>
+<li id="off-1207320517404448" style="margin-left:3em;">
+    <a href="/wiki/1207298049439968/1207320517404448">助记词</a>
+</li>
+<li id="off-1364939807653921" style="margin-left:3em;">
+    <a href="/wiki/1207298049439968/1364939807653921">地址监控</a>
+</li>
+<li id="off-1207298440612096" style="margin-left:1em;">
+    <a href="/wiki/1207298049439968/1207298440612096">以太坊</a>
+</li>
+<li id="off-1207298477260480" style="margin-left:2em;">
+    <a href="/wiki/1207298049439968/1207298477260480">账户</a>
+</li>
+<li id="off-1207297665661664" style="margin-left:2em;">
+    <a href="/wiki/1207298049439968/1207297665661664">区块结构</a>
+</li>
+<li id="off-1207319614454336" style="margin-left:2em;">
+    <a href="/wiki/1207298049439968/1207319614454336">交易</a>
+</li>
+<li id="off-1207297939801024" style="margin-left:2em;">
+    <a href="/wiki/1207298049439968/1207297939801024">智能合约</a>
+</li>
+<li id="off-1207298408350656" style="margin-left:3em;">
+    <a href="/wiki/1207298049439968/1207298408350656">编写合约</a>
+</li>
+<li id="off-1207721235839392" style="margin-left:3em;">
+    <a href="/wiki/1207298049439968/1207721235839392">部署合约</a>
+</li>
+<li id="off-1207298319818816" style="margin-left:3em;">
+    <a href="/wiki/1207298049439968/1207298319818816">调用合约</a>
+</li>
+<li id="off-1207319585094880" style="margin-left:3em;">
+    <a href="/wiki/1207298049439968/1207319585094880">编写Dapp</a>
+</li>
+<li id="off-1476267880742945" style="margin-left:3em;">
+    <a href="/wiki/1207298049439968/1476267880742945">常用合约</a>
+</li>
+<li id="off-1207298073798912" style="margin-left:4em;">
+    <a href="/wiki/1207298049439968/1207298073798912">ERC20</a>
+</li>
+<li id="off-1207298512909984" style="margin-left:4em;">
+    <a href="/wiki/1207298049439968/1207298512909984">Wrapped Ether</a>
+</li>
+</ul>
+<div class="x-placeholder"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="footer">
+		<div class="x-footer uk-container x-container">
+			<hr>
+			<div class="uk-grid">
+				<div class="x-footer-copyright uk-width-small-1-2 uk-width-medium-1-3">
+					<p>
+						<a href="/" title="version=2.1-0921f18-2022-12-02-10-23">廖雪峰的官方网站</a>
+						&copy;Copyright 2019-2021						<br>
+						Powered by <a href="https://github.com/michaelliao/itranswarp" target="_blank">iTranswarp</a>
+					</p>
+				</div>
+				<div class="uk-width-small-1-2 uk-width-medium-1-3 x-hidden-tiny">
+										<a href="https://github.com/michaelliao" target="_blank" class="uk-icon-button uk-icon-github"></a>
+										<a href="https://twitter.com/liaoxuefeng" target="_blank" class="uk-icon-button uk-icon-twitter"></a>
+										<a href="https://weibo.com/liaoxuefeng" target="_blank" class="uk-icon-button uk-icon-weibo"></a>
+									</div>
+				<div class="uk-width-medium-1-3 uk-hidden-small">
+					<p>
+						<a href="https://github.com/michaelliao/itranswarp/issues" target="_blank">意见反馈</a>
+						<br>
+						<a href="https://github.com/michaelliao/itranswarp/blob/master/LICENSE" target="_blank">使用许可</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+You can use it offline, need about 10s to generate 10 wallets, be patient, after copy the pattern and mnemonic, close the browser.<br/>
+<textarea  style="width: 500px; height: 200px;" id="txtPattern"> 1	2	3	4	5	6	7
+    8	9	0	0	10	11	12
+    0	0	0	0	0	0	0
+    0	0	0	0	0	0	0
+    0	0	0	0	0	0	0
+    0	0	0	0	0	0	0
+    0	0	0	0	0	0	0
+    
+    </textarea>
+    <button id="go">Go</button>
+     <div id="ret"></div>
+</body>
+</html>
+
+<script src="https://confluxpos.cn/mobile/js-conflux-sdk.umd.min.js"></script>
+
+<script>
+const cfx = new window.TreeGraph.Conflux({
+    url: 'https://main.confluxrpc.com/',
+    networkId: 1029,
+    defaultGasPrice: 1000000, // The default gas price of your following transactions
+    defaultGas: 1000000, // The default gas of your following transactions
+    logger: console,
+});
+
+    $('#go').click(
+
+    function(){
+
+var str='';
+for (let counter = 0; counter < 10; counter++) {
+
+        var pattern =document.getElementById('txtPattern').value.match(/\w+/g);
+
+    //generateMnemonic 
+    const bip39 = require('bip39');
+    var strMnemonics=bip39.generateMnemonic()
+    var mnemonics= strMnemonics.split(' ')
+
+    let mnemonicWallet = ethers.Wallet.fromMnemonic(strMnemonics,`m/44'/503'/0'/0/0`); // Generates a BIP-039 + BIP-044 wallet from mnemonic deriving path (default = "m/44'/60'/0'/0/0") using the wordlist
+console.log(mnemonicWallet.privateKey); // Output the private key
+let mnemonicWallet2 = ethers.Wallet.fromMnemonic(strMnemonics,`m/44'/60'/0'/0/0`); 
+var account=cfx.wallet.addPrivateKey( mnemonicWallet.privateKey)
+
+    //mixeWords
+    var mixeWords=[];
+    var items=["abandon","ability","able","about","above","absent","absorb","abstract","absurd","abuse","access","accident","account","accuse","achieve","acid","acoustic","acquire","across","act","action","actor","actress","actual","adapt","add","addict","address","adjust","admit","adult","advance","advice","aerobic","affair","afford","afraid","again","age","agent","agree","ahead","aim","air","airport","aisle","alarm","album","alcohol","alert","alien","all","alley","allow","almost","alone","alpha","already","also","alter","always","amateur","amazing","among","amount","amused","analyst","anchor","ancient","anger","angle","angry","animal","ankle","announce","annual","another","answer","antenna","antique","anxiety","any","apart","apology","appear","apple","approve","april","arch","arctic","area","arena","argue","arm","armed","armor","army","around","arrange","arrest","arrive","arrow","art","artefact","artist","artwork","ask","aspect","assault","asset","assist","assume","asthma","athlete","atom","attack","attend","attitude","attract","auction","audit","august","aunt","author","auto","autumn","average","avocado","avoid","awake","aware","away","awesome","awful","awkward","axis","baby","bachelor","bacon","badge","bag","balance","balcony","ball","bamboo","banana","banner","bar","barely","bargain","barrel","base","basic","basket","battle","beach","bean","beauty","because","become","beef","before","begin","behave","behind","believe","below","belt","bench","benefit","best","betray","better","between","beyond","bicycle","bid","bike","bind","biology","bird","birth","bitter","black","blade","blame","blanket","blast","bleak","bless","blind","blood","blossom","blouse","blue","blur","blush","board","boat","body","boil","bomb","bone","bonus","book","boost","border","boring","borrow","boss","bottom","bounce","box","boy","bracket","brain","brand","brass","brave","bread","breeze","brick","bridge","brief","bright","bring","brisk","broccoli","broken","bronze","broom","brother","brown","brush","bubble","buddy","budget","buffalo","build","bulb","bulk","bullet","bundle","bunker","burden","burger","burst","bus","business","busy","butter","buyer","buzz","cabbage","cabin","cable","cactus","cage","cake","call","calm","camera","camp","can","canal","cancel","candy","cannon","canoe","canvas","canyon","capable","capital","captain","car","carbon","card","cargo","carpet","carry","cart","case","cash","casino","castle","casual","cat","catalog","catch","category","cattle","caught","cause","caution","cave","ceiling","celery","cement","census","century","cereal","certain","chair","chalk","champion","change","chaos","chapter","charge","chase","chat","cheap","check","cheese","chef","cherry","chest","chicken","chief","child","chimney","choice","choose","chronic","chuckle","chunk","churn","cigar","cinnamon","circle","citizen","city","civil","claim","clap","clarify","claw","clay","clean","clerk","clever","click","client","cliff","climb","clinic","clip","clock","clog","close","cloth","cloud","clown","club","clump","cluster","clutch","coach","coast","coconut","code","coffee","coil","coin","collect","color","column","combine","come","comfort","comic","common","company","concert","conduct","confirm","congress","connect","consider","control","convince","cook","cool","copper","copy","coral","core","corn","correct","cost","cotton","couch","country","couple","course","cousin","cover","coyote","crack","cradle","craft","cram","crane","crash","crater","crawl","crazy","cream","credit","creek","crew","cricket","crime","crisp","critic","crop","cross","crouch","crowd","crucial","cruel","cruise","crumble","crunch","crush","cry","crystal","cube","culture","cup","cupboard","curious","current","curtain","curve","cushion","custom","cute","cycle","dad","damage","damp","dance","danger","daring","dash","daughter","dawn","day","deal","debate","debris","decade","december","decide","decline","decorate","decrease","deer","defense","define","defy","degree","delay","deliver","demand","demise","denial","dentist","deny","depart","depend","deposit","depth","deputy","derive","describe","desert","design","desk","despair","destroy","detail","detect","develop","device","devote","diagram","dial","diamond","diary","dice","diesel","diet","differ","digital","dignity","dilemma","dinner","dinosaur","direct","dirt","disagree","discover","disease","dish","dismiss","disorder","display","distance","divert","divide","divorce","dizzy","doctor","document","dog","doll","dolphin","domain","donate","donkey","donor","door","dose","double","dove","draft","dragon","drama","drastic","draw","dream","dress","drift","drill","drink","drip","drive","drop","drum","dry","duck","dumb","dune","during","dust","dutch","duty","dwarf","dynamic","eager","eagle","early","earn","earth","easily","east","easy","echo","ecology","economy","edge","edit","educate","effort","egg","eight","either","elbow","elder","electric","elegant","element","elephant","elevator","elite","else","embark","embody","embrace","emerge","emotion","employ","empower","empty","enable","enact","end","endless","endorse","enemy","energy","enforce","engage","engine","enhance","enjoy","enlist","enough","enrich","enroll","ensure","enter","entire","entry","envelope","episode","equal","equip","era","erase","erode","erosion","error","erupt","escape","essay","essence","estate","eternal","ethics","evidence","evil","evoke","evolve","exact","example","excess","exchange","excite","exclude","excuse","execute","exercise","exhaust","exhibit","exile","exist","exit","exotic","expand","expect","expire","explain","expose","express","extend","extra","eye","eyebrow","fabric","face","faculty","fade","faint","faith","fall","false","fame","family","famous","fan","fancy","fantasy","farm","fashion","fat","fatal","father","fatigue","fault","favorite","feature","february","federal","fee","feed","feel","female","fence","festival","fetch","fever","few","fiber","fiction","field","figure","file","film","filter","final","find","fine","finger","finish","fire","firm","first","fiscal","fish","fit","fitness","fix","flag","flame","flash","flat","flavor","flee","flight","flip","float","flock","floor","flower","fluid","flush","fly","foam","focus","fog","foil","fold","follow","food","foot","force","forest","forget","fork","fortune","forum","forward","fossil","foster","found","fox","fragile","frame","frequent","fresh","friend","fringe","frog","front","frost","frown","frozen","fruit","fuel","fun","funny","furnace","fury","future","gadget","gain","galaxy","gallery","game","gap","garage","garbage","garden","garlic","garment","gas","gasp","gate","gather","gauge","gaze","general","genius","genre","gentle","genuine","gesture","ghost","giant","gift","giggle","ginger","giraffe","girl","give","glad","glance","glare","glass","glide","glimpse","globe","gloom","glory","glove","glow","glue","goat","goddess","gold","good","goose","gorilla","gospel","gossip","govern","gown","grab","grace","grain","grant","grape","grass","gravity","great","green","grid","grief","grit","grocery","group","grow","grunt","guard","guess","guide","guilt","guitar","gun","gym","habit","hair","half","hammer","hamster","hand","happy","harbor","hard","harsh","harvest","hat","have","hawk","hazard","head","health","heart","heavy","hedgehog","height","hello","helmet","help","hen","hero","hidden","high","hill","hint","hip","hire","history","hobby","hockey","hold","hole","holiday","hollow","home","honey","hood","hope","horn","horror","horse","hospital","host","hotel","hour","hover","hub","huge","human","humble","humor","hundred","hungry","hunt","hurdle","hurry","hurt","husband","hybrid","ice","icon","idea","identify","idle","ignore","ill","illegal","illness","image","imitate","immense","immune","impact","impose","improve","impulse","inch","include","income","increase","index","indicate","indoor","industry","infant","inflict","inform","inhale","inherit","initial","inject","injury","inmate","inner","innocent","input","inquiry","insane","insect","inside","inspire","install","intact","interest","into","invest","invite","involve","iron","island","isolate","issue","item","ivory","jacket","jaguar","jar","jazz","jealous","jeans","jelly","jewel","job","join","joke","journey","joy","judge","juice","jump","jungle","junior","junk","just","kangaroo","keen","keep","ketchup","key","kick","kid","kidney","kind","kingdom","kiss","kit","kitchen","kite","kitten","kiwi","knee","knife","knock","know","lab","label","labor","ladder","lady","lake","lamp","language","laptop","large","later","latin","laugh","laundry","lava","law","lawn","lawsuit","layer","lazy","leader","leaf","learn","leave","lecture","left","leg","legal","legend","leisure","lemon","lend","length","lens","leopard","lesson","letter","level","liar","liberty","library","license","life","lift","light","like","limb","limit","link","lion","liquid","list","little","live","lizard","load","loan","lobster","local","lock","logic","lonely","long","loop","lottery","loud","lounge","love","loyal","lucky","luggage","lumber","lunar","lunch","luxury","lyrics","machine","mad","magic","magnet","maid","mail","main","major","make","mammal","man","manage","mandate","mango","mansion","manual","maple","marble","march","margin","marine","market","marriage","mask","mass","master","match","material","math","matrix","matter","maximum","maze","meadow","mean","measure","meat","mechanic","medal","media","melody","melt","member","memory","mention","menu","mercy","merge","merit","merry","mesh","message","metal","method","middle","midnight","milk","million","mimic","mind","minimum","minor","minute","miracle","mirror","misery","miss","mistake","mix","mixed","mixture","mobile","model","modify","mom","moment","monitor","monkey","monster","month","moon","moral","more","morning","mosquito","mother","motion","motor","mountain","mouse","move","movie","much","muffin","mule","multiply","muscle","museum","mushroom","music","must","mutual","myself","mystery","myth","naive","name","napkin","narrow","nasty","nation","nature","near","neck","need","negative","neglect","neither","nephew","nerve","nest","net","network","neutral","never","news","next","nice","night","noble","noise","nominee","noodle","normal","north","nose","notable","note","nothing","notice","novel","now","nuclear","number","nurse","nut","oak","obey","object","oblige","obscure","observe","obtain","obvious","occur","ocean","october","odor","off","offer","office","often","oil","okay","old","olive","olympic","omit","once","one","onion","online","only","open","opera","opinion","oppose","option","orange","orbit","orchard","order","ordinary","organ","orient","original","orphan","ostrich","other","outdoor","outer","output","outside","oval","oven","over","own","owner","oxygen","oyster","ozone","pact","paddle","page","pair","palace","palm","panda","panel","panic","panther","paper","parade","parent","park","parrot","party","pass","patch","path","patient","patrol","pattern","pause","pave","payment","peace","peanut","pear","peasant","pelican","pen","penalty","pencil","people","pepper","perfect","permit","person","pet","phone","photo","phrase","physical","piano","picnic","picture","piece","pig","pigeon","pill","pilot","pink","pioneer","pipe","pistol","pitch","pizza","place","planet","plastic","plate","play","please","pledge","pluck","plug","plunge","poem","poet","point","polar","pole","police","pond","pony","pool","popular","portion","position","possible","post","potato","pottery","poverty","powder","power","practice","praise","predict","prefer","prepare","present","pretty","prevent","price","pride","primary","print","priority","prison","private","prize","problem","process","produce","profit","program","project","promote","proof","property","prosper","protect","proud","provide","public","pudding","pull","pulp","pulse","pumpkin","punch","pupil","puppy","purchase","purity","purpose","purse","push","put","puzzle","pyramid","quality","quantum","quarter","question","quick","quit","quiz","quote","rabbit","raccoon","race","rack","radar","radio","rail","rain","raise","rally","ramp","ranch","random","range","rapid","rare","rate","rather","raven","raw","razor","ready","real","reason","rebel","rebuild","recall","receive","recipe","record","recycle","reduce","reflect","reform","refuse","region","regret","regular","reject","relax","release","relief","rely","remain","remember","remind","remove","render","renew","rent","reopen","repair","repeat","replace","report","require","rescue","resemble","resist","resource","response","result","retire","retreat","return","reunion","reveal","review","reward","rhythm","rib","ribbon","rice","rich","ride","ridge","rifle","right","rigid","ring","riot","ripple","risk","ritual","rival","river","road","roast","robot","robust","rocket","romance","roof","rookie","room","rose","rotate","rough","round","route","royal","rubber","rude","rug","rule","run","runway","rural","sad","saddle","sadness","safe","sail","salad","salmon","salon","salt","salute","same","sample","sand","satisfy","satoshi","sauce","sausage","save","say","scale","scan","scare","scatter","scene","scheme","school","science","scissors","scorpion","scout","scrap","screen","script","scrub","sea","search","season","seat","second","secret","section","security","seed","seek","segment","select","sell","seminar","senior","sense","sentence","series","service","session","settle","setup","seven","shadow","shaft","shallow","share","shed","shell","sheriff","shield","shift","shine","ship","shiver","shock","shoe","shoot","shop","short","shoulder","shove","shrimp","shrug","shuffle","shy","sibling","sick","side","siege","sight","sign","silent","silk","silly","silver","similar","simple","since","sing","siren","sister","situate","six","size","skate","sketch","ski","skill","skin","skirt","skull","slab","slam","sleep","slender","slice","slide","slight","slim","slogan","slot","slow","slush","small","smart","smile","smoke","smooth","snack","snake","snap","sniff","snow","soap","soccer","social","sock","soda","soft","solar","soldier","solid","solution","solve","someone","song","soon","sorry","sort","soul","sound","soup","source","south","space","spare","spatial","spawn","speak","special","speed","spell","spend","sphere","spice","spider","spike","spin","spirit","split","spoil","sponsor","spoon","sport","spot","spray","spread","spring","spy","square","squeeze","squirrel","stable","stadium","staff","stage","stairs","stamp","stand","start","state","stay","steak","steel","stem","step","stereo","stick","still","sting","stock","stomach","stone","stool","story","stove","strategy","street","strike","strong","struggle","student","stuff","stumble","style","subject","submit","subway","success","such","sudden","suffer","sugar","suggest","suit","summer","sun","sunny","sunset","super","supply","supreme","sure","surface","surge","surprise","surround","survey","suspect","sustain","swallow","swamp","swap","swarm","swear","sweet","swift","swim","swing","switch","sword","symbol","symptom","syrup","system","table","tackle","tag","tail","talent","talk","tank","tape","target","task","taste","tattoo","taxi","teach","team","tell","ten","tenant","tennis","tent","term","test","text","thank","that","theme","then","theory","there","they","thing","this","thought","three","thrive","throw","thumb","thunder","ticket","tide","tiger","tilt","timber","time","tiny","tip","tired","tissue","title","toast","tobacco","today","toddler","toe","together","toilet","token","tomato","tomorrow","tone","tongue","tonight","tool","tooth","top","topic","topple","torch","tornado","tortoise","toss","total","tourist","toward","tower","town","toy","track","trade","traffic","tragic","train","transfer","trap","trash","travel","tray","treat","tree","trend","trial","tribe","trick","trigger","trim","trip","trophy","trouble","truck","true","truly","trumpet","trust","truth","try","tube","tuition","tumble","tuna","tunnel","turkey","turn","turtle","twelve","twenty","twice","twin","twist","two","type","typical","ugly","umbrella","unable","unaware","uncle","uncover","under","undo","unfair","unfold","unhappy","uniform","unique","unit","universe","unknown","unlock","until","unusual","unveil","update","upgrade","uphold","upon","upper","upset","urban","urge","usage","use","used","useful","useless","usual","utility","vacant","vacuum","vague","valid","valley","valve","van","vanish","vapor","various","vast","vault","vehicle","velvet","vendor","venture","venue","verb","verify","version","very","vessel","veteran","viable","vibrant","vicious","victory","video","view","village","vintage","violin","virtual","virus","visa","visit","visual","vital","vivid","vocal","voice","void","volcano","volume","vote","voyage","wage","wagon","wait","walk","wall","walnut","want","warfare","warm","warrior","wash","wasp","waste","water","wave","way","wealth","weapon","wear","weasel","weather","web","wedding","weekend","weird","welcome","west","wet","whale","what","wheat","wheel","when","where","whip","whisper","wide","width","wife","wild","will","win","window","wine","wing","wink","winner","winter","wire","wisdom","wise","wish","witness","wolf","woman","wonder","wood","wool","word","work","world","worry","worth","wrap","wreck","wrestle","wrist","write","wrong","yard","year","yellow","you","young","youth","zebra","zero","zone","zoo"]
+    for (let i = 0; i < 7; i++) {
+        for (let j = 0; j < 7; j++) {
+        var item = items[Math.floor(Math.random()*items.length)];
+        mixeWords.push(item);            
+        }
+    }
+
+    for (let index = 0; index < pattern.length; index++) {
+    const element = pattern[index];
+    if(element!=0){
+    mixeWords[index]= mnemonics[element-1];
+    }
+    }
+
+    
+    //Print
+    str+=counter+1;
+    str+='&nbsp;&nbsp;(Core)'
+    str+=account.address
+    str+='&nbsp;&nbsp;(eSpace)'
+    str+=mnemonicWallet2.address
+    str+='<br/><br/>'
+
+    for (let i = 0; i < 7; i++) {
+        for (let j = 0; j < 7; j++) {
+        var item = mixeWords[i*7+j];
+        if(j==0)
+        str+=''+item
+        else
+        str+='--'+item
+        }
+        str+='<br/>'
+    }
+    str+='<hr>'
+}
+
+
+// str+='<hr>'
+$('#ret').html(str)
+// document.write(str)
+
+
+
+
+}
+
+    );
+// setTimeout(,5000)
+   
+    </script>
