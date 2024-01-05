@@ -191,7 +191,7 @@ Therefore, after stake, you need to wait for at least 13 days+ 15.6hours to unst
               <input class="form-control" type="number" v-model="unstakeCount">
             </div>
             <div class="col-md-5 col-12">
-              <button class="btn btn-primary" v-on:click="unstake" :disabled="!userInfo.connected"  >Unstake</button>
+              <button class="btn btn-primary" v-on:click="unstake" :disabled="!userInfo.connected" style="display: none;" >Unstake</button>
             </div>
           </div>
         </div>
