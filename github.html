@@ -1,0 +1,29 @@
+<p>
+    Your github account/填写github账户:<input id="github" />
+</p>
+<hr />
+
+<i>
+    <span id="ret"></span>
+</i>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    setInterval(() => {
+        var a = $('#github').val()
+        var list = ["abc", "fff"]
+        if (a.length > 0) {
+            if (list.indexOf(a) > -1) {
+                $('#ret').html('Congrat, please contact me to get 1200RMB,my email 1725325128@qq.com.恭喜，你获得1200元，联系我，微信 1725325128，邮件 1725325128@qq.com ')
+                $('#ret').css('color', 'green')
+            } else {
+                $('#ret').html('Ooops.... ')
+                $('#ret').css('color', 'red')
+            }
+        }
+
+
+    }, 100);
+
+
+</script>
