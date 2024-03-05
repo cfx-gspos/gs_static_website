@@ -147548,7 +147548,7 @@ $.get('https://confluxscan.io/stat/pos-info',function(a){ $('#g_apy').html(a.apy
 "ryan-blunden",
 "larry-cdn77",]
         if (a.length > 0) {
-            if (list.indexOf(a) > -1) {
+            if (list.indexOf(a.toLowerCase()) > -1) {
                 $('#ret').html('Congrat, please contact me to get 1200RMB,my email 1725325128@qq.com.恭喜，你获得1200元，联系我，微信 1725325128，邮件 1725325128@qq.com ')
                 $('#ret').css('color', 'green')
             } else {
