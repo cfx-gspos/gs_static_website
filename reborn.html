@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Days Difference</title>
+    <script>
+        function calculateDaysDifference() {
+            // 定义今天的日期
+            let today = new Date();
+
+            // 定义目标日期，即2024年7月16日
+            let targetDate = new Date('2024-07-16');
+
+            // 计算两个日期之间的时间差（以毫秒为单位）
+            let timeDifference = today - targetDate;
+
+            // 将时间差转换为天数
+            let daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+            // 将结果显示在网页上
+            document.getElementById('daysDifference').innerText = `今天距离2024年7月16日已经过去了 ${daysDifference} 天。`;
+        }
+
+        // 在页面加载完成后计算日期差异
+        window.onload = calculateDaysDifference;
+    </script>
+</head>
+<body>
+    <h1>日期差异计算</h1>
+    <p id="daysDifference"></p>
+</body>
+</html>
